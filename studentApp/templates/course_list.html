@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Course enrolments</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">View Enrollments</button>
+    </form>
+    {% if enrollments %}
+        <h2>{{ course.name }}</h2>
+        <h3>Enrolled Students:</h3>
+        <ul>
+            {% for enrollment in enrollments %}
+                <li>{{ enrollment.student.name }} - {{ enrollment.enrollment_date }}</li>
+            {% endfor %}
+        </ul>
+        <h3>Total students enrolled to the course {{course.name}} are {{count}}</h3>
+    {% endif %}
+{% endblock %}

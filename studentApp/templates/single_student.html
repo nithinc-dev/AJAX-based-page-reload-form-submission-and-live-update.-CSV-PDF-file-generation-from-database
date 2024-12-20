@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h2>Student Details</h2>
+    <h4>Name: {{ student.name }}</h4>
+    <h4>USN: {{ student.usn }}</h4>
+    <h4>Courses:</h4>
+    <ul>
+        {% for course in student.courses.all %}
+            <li>{{ course.name }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+
+
+{% comment %} {% extends 'base.html' %}
+{% block content %}
+
+
+
+<h2>Single students</h2>
+<h4> {{object.name}}, {{object.usn}}, {{object.courses.name}}</h4>
+{%for i in objects.courses.all%}
+<h4>{{i.name}}</h4>
+{%endfor%}
+{% endblock %} {% endcomment %}
+
+
+
+{% comment %} <h2>Single students</h2>
+<h4> {{ student.name }}, {{ student.usn }}, {{ student.courses.name }}</h4>
+{% endblock %} {% endcomment %}

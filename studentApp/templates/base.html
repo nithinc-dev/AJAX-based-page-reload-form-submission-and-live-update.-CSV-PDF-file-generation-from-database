@@ -1,0 +1,21 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block header %}Default Header{% endblock %}</title>
+</head>
+<body>
+    {% if messages %}
+        {% for message in messages %}
+        {{ message }} 
+        {%endfor%}
+    {% endif %}
+    <nav>
+        <a href="{% url 'register'%}">Register a Student</a> |
+        <a href="{% url 'course_list'%}">View Student enrollment</a> |
+        <a href="{% url 'all_students2'%}">All Students</a>
+    </nav>
+    {% block content %}{% endblock %}
+    {% block js %}{% endblock %}
+</body>
+</html>

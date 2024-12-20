@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% comment %} removed link as i using ajax {% endcomment %}
+{% block content %}
+<h1>Student registration to courses</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Register</button>
+    </form>
+{% endblock %}

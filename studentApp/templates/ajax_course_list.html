@@ -1,0 +1,44 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Course enrolments</h1>
+<form method="post" id="course-form">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">View Enrollments</button>
+</form>
+<div id="message-container"></div>
+<div id="enrollment-list">
+  {% comment %} {% include "enrollment_list.html" %} {% endcomment %} 
+  {% if enrollments %}
+  <h2>{{ course.name }}</h2>
+  <h3>Enrolled Students:</h3>
+  <ul>
+    {% for enrollment in enrollments %}
+
+    <li>{{ enrollment.student.name }} - {{ enrollment.enrollment_date }}</li>
+    {% endfor %}
+  </ul>
+  <h3>Total students enrolled to the course {{course.name}} are {{count}}</h3>
+  {% endif %}
+</div>
+
+{% endblock %} {% block js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $("#course-form").on("submit", function (e) {
+      e.preventDefault(); // Prevent the form from submitting normally
+      $.ajax({
+        type: "POST",
+        url: '{% url "course_list" %}', // Make sure this matches your URL name
+        data: $(this).serialize(),
+        success: function (response) {
+          $("#message-container").html("<h3>ajax successful</h3>");
+          $("#enrollment-list").html(response);
+        },
+        error: function () {
+          $("#message-container").html("<h3>An error occurred. Please try again.</h3>");
+        },
+      });
+    });
+  });
+</script>
+{% endblock %}

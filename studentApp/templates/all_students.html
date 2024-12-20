@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+{% comment %} <ol>
+{% for i in students %}
+<li><a href="/all/{{forloop.counter}}"> {{i.name}} - {{i.usn}}</a> </li>
+{% endfor %}
+</ol> {% endcomment %}
+<h2>All students</h2>
+<ul>
+    {% for student in students %}
+        <li>
+            <a href="{% url 'single_student' student.pk %}">{{ student.name }} | {{ student.usn }}</a>
+        </li>
+    {% endfor %}
+</ul>
+<button><a href="{% url 'export_model_csv' %}" class="button" >Download CSV file</a></button>
+<button><a href="{% url 'export_model_pdf' %}" class="button" >Download PDF file</a></button>
+{% endblock %}
+
+
+

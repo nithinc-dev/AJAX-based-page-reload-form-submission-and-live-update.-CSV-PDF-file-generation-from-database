@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<h2>PDF</h2>
+<ul>
+    {% for enrollment in enrollments %}
+        <li>{{ enrollment.student.name }} - {{enrollment.course.name}} -{{ enrollment.enrollment_date }}</li>
+    {% endfor %}
+</ul>
+<h4> {{object.name}}, {{object.usn}}, {{object.courses.name}}</h4>
+{% endblock %}

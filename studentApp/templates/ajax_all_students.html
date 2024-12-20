@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div id="student-list">
+    <h2>All students</h2>
+    <ul id="students-ul">
+        {% for student in students %}
+            <li>
+                <a href="{% url 'single_student' student.pk %}">{{ student.name }} | {{ student.usn }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+<button><a href="{% url 'export_model_csv' %}" class="button" >Download CSV file</a></button>
+<button><a href="{% url 'export_model_pdf' %}" class="button" >Download PDF file</a></button>
+
+{% endblock %}
+
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    function fetchStudents() {
+        $.ajax({
+            url: '{% url "all_students" %}',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                
+                $('#students-ul').empty();
+                var students = data.students;
+                for (var i = 0; i < students.length; i++) {
+                    var student = students[i];
+                    $('#students-ul').append('<li><a href="/all/' + student.id + '">' + student.name + ' | ' + student.usn + '</a></li>');
+                }
+                
+
+                $('#students-ul').empty();
+                $.each(data.students, function(index, student) {
+                    $('#students-ul').append('<li><a href="/all/' + student.id + '">' + student.name + ' | ' + student.usn + '</a></li>');
+                });
+            },
+            error: function() {
+                $('#student-list').html('<p>An error has occurred</p>');
+            }
+        });
+    }
+    
+    fetchStudents(); // Fetch the students initially
+    
+    // Optionally, you can set an interval to refresh the student list periodically
+    setInterval(fetchStudents, 6000); // Refresh every 30 seconds
+});
+</script>
+{% endblock %}
+
+
+
+{% comment %} {% extends 'base.html' %}
+{% block content %}
+
+<div id="student-list">
+    <h2>All students</h2>
+<ul>
+    {% for student in students %}
+        <li>
+            <a href="{% url 'single_student' student.pk %}">{{ student.name }} | {{ student.usn }}</a>
+        </li>
+    {% endfor %}
+</ul>
+<button><a href="{% url 'export_model_csv' %}" class="button" >Download CSV file</a></button>
+<button><a href="{% url 'export_model_pdf' %}" class="button" >Download PDF file</a></button>
+</div>
+{% endblock %}
+{% comment %} <button><a href="{% url 'export_model_csv' %}" class="button">Download CSV file</a></button>
+<button><a href="{% url 'export_model_pdf' %}" class="button">Download PDF file</a></button> {% endcomment %}
+{%comment%}{%block js%}
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+        $.ajax({
+            url: '{% url "all_students" %}',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                $('#student-list').html();
+            },
+            error: function() {
+                $('#student-list').html();
+            }
+        });
+    });
+</script> 
+
+{% endblock %} {% endcomment %}
+
+
+{% comment %} {% extends 'base.html' %}
+{% block content %}
+<div id="student-list">
+    <h2>All students</h2>
+    <ul>
+    {% for student in students %}
+        <li>
+            <a href="{% url 'single_student' student.pk %}">{{ student.name }} | {{ student.usn }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+    <button><a href="{% url 'export_model_csv' %}" class="button">Download CSV file</a></button>
+    <button><a href="{% url 'export_model_pdf' %}" class="button">Download PDF file</a></button>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+    const eventSource = new EventSource("{% url 'all_students' %}");
+    eventSource.onmessage = function(event) {
+        const students = JSON.parse(event.data);
+        const studentList = document.querySelector('#student-list ul');
+        studentList.innerHTML = '';
+        students.forEach(student => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="/all/${student.pk}/">${student.name} | ${student.usn}</a>`;
+            studentList.appendChild(li);
+        });
+    };
+});
+</script>
+{% endblock %} {% endcomment %}

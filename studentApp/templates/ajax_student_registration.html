@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Student registration to courses</h1>
+<form method="post" id="student-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Register</button>
+</form>
+<div id="message-container"></div>
+{% endblock %}
+
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#student-form').on('submit', function(e) {
+            e.preventDefault();  // Prevent the form from submitting normally
+            $.ajax({
+                type: 'POST',
+                url: '{% url "register" %}',  // Make sure this matches your URL name
+                data: $(this).serialize(),
+                success: function(response) {
+                    $("#message-container").html(response);
+                    if (!response.includes("already registered")) {
+                        $('#student-form')[0].reset();  // Reset the form on success
+                    }
+                },
+                error: function() {
+                    $("#message-container").html("<h3>An error occurred. Please try again.</h3>");
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
+
+
+
+{% comment %} {% extends 'base.html' %}
+{% block content %}
+<h1>Student registration to courses</h1>
+    <form method="post" id="student-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Register</button>
+        <span id="ans"></span>
+    </form>
+{% endblock %}
+{%block js%}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#student-form').on('submit', function(e) {
+            e.preventDefault();  // Prevent the form from submitting normally
+
+            $.ajax({
+                type: 'POST',
+                url: '{% url "register" %}',  // Make sure this matches your URL name
+                data: $(this).serialize(),
+                success: function(response) {
+                    $("#ans").html(response)
+                },
+                
+                
+            });
+        });
+    });
+</script>
+{%endblock%} {% endcomment %}
+
+
+
+
+
+
+
+
+
+{% comment %} {% extends 'base.html' %}
+{% block content %}
+<h1>Student registration to courses</h1>
+<form method="post" id="student-form">
+    {% csrf_token %}
+    
+    <div class="form-group" id="usn">
+        <label for="{{ form.usn.id_for_label }}">USN:</label>
+        {{ form.usn }}
+        {% if form.usn.errors %}
+            <div class="error">{{ form.usn.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group" id="name">
+        <label for="{{ form.name.id_for_label }}">Name:</label>
+        {{ form.name }}
+        {% if form.name.errors %}
+            <div class="error">{{ form.name.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group" id="courses">
+        <label>Courses:</label>
+        {{ form.courses }}
+        {% if form.courses.errors %}
+            <div class="error">{{ form.courses.errors }}</div>
+        {% endif %}
+    </div>
+
+    <button type="submit" id="btn">Register</button>
+</form>
+{% endblock %} {% endcomment %}
+{% comment %} <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    ($document).ready(function() {
+        $("#btn").click(function() {
+            var usn = $("usn").val();
+            var name = $("name").val();
+            var course = $("course").val();
+            $.ajax({
+                type: "POST",
+                url: ""
+            })
+    };) {% endcomment %}
